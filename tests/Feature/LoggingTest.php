@@ -64,4 +64,5 @@ class LoggingTest extends TestCase
 
         assertTrue(true);
     }
+    // end
 }
