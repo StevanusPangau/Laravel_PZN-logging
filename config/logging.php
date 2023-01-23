@@ -1,5 +1,6 @@
 <?php
 
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -72,7 +73,7 @@ return [
 
         'slack' => [
             'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
+            'url' => env('LOG_SLACK_WEBHOOK_URL'), // langsung pindahkan di env aja
             'username' => 'Laravel Log',
             'emoji' => ':boom:',
             // 'level' => env('LOG_LEVEL', 'critical'), //default
@@ -97,6 +98,18 @@ return [
             'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
                 'stream' => 'php://stderr',
+            ],
+        ],
+
+        // Contoh buat channel sendiri dengan menentukan Handler yang akan digunakan
+        'file' => [
+            'driver' => 'monolog',
+            'level' => env('LOG_LEVEL', 'debug'),
+            'handler' => StreamHandler::class,
+            // 'formatter' => env('LOG_STDERR_FORMATTER'),
+            'formatter' => JsonFormatter::class, // contoh formatnya dibuat ke json
+            'with' => [
+                'stream' => storage_path("logs/application.log"),
             ],
         ],
 
